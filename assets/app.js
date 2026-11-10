@@ -70,21 +70,30 @@ function submitQuestion(raw){
   $('question').value='';resize();state.busy=false;$('sendBtn').disabled=false;$('question').focus({preventScroll:true});
 }
 function resize(){const input=$('question');input.style.height='auto';input.style.height=Math.min(input.scrollHeight,150)+'px'}
+function openMenu(){$('sidebar').classList.add('open');$('mobileOverlay').hidden=false}
+function closeMenu(){$('sidebar').classList.remove('open');$('mobileOverlay').hidden=true}
 async function init(){
   try{
     const [cfg,knowledge]=await Promise.all([
-      fetch('/data/config.json',{cache:'no-store'}),fetch('/data/knowledge.json',{cache:'no-store'})
+      fetch('./data/config.json',{cache:'no-store'}),fetch('./data/knowledge.json',{cache:'no-store'})
     ]);
     if(!cfg.ok||!knowledge.ok)throw new Error('자료 파일을 읽지 못했습니다.');
     state.config=await cfg.json();const kb=await knowledge.json();state.entries=Array.isArray(kb.entries)?kb.entries:[];
-    const suggestions=$('suggestions');for(const question of state.config.suggestedQuestions||[]){
+    const suggestions=$('suggestions'),sidebarSuggestions=$('sidebarSuggestions');
+    for(const question of state.config.suggestedQuestions||[]){
       const button=document.createElement('button');button.type='button';button.className='suggestion';button.textContent=question;
       button.addEventListener('click',()=>submitQuestion(question));suggestions.append(button);
+      const sideButton=document.createElement('button');sideButton.type='button';sideButton.className='quick-link';sideButton.textContent=question;
+      sideButton.addEventListener('click',()=>{closeMenu();submitQuestion(question)});sidebarSuggestions.append(sideButton);
     }
     $('chatForm').addEventListener('submit',(event)=>{event.preventDefault();submitQuestion($('question').value)});
     $('question').addEventListener('input',resize);
     $('question').addEventListener('keydown',(event)=>{if(event.key==='Enter'&&!event.shiftKey&&!event.isComposing){event.preventDefault();submitQuestion($('question').value)}});
     $('resetBtn').addEventListener('click',()=>location.reload());
+    $('topResetBtn').addEventListener('click',()=>location.reload());
+    $('menuBtn').addEventListener('click',openMenu);
+    $('closeMenuBtn').addEventListener('click',closeMenu);
+    $('mobileOverlay').addEventListener('click',closeMenu);
   }catch(error){
     $('chatForm').addEventListener('submit',e=>e.preventDefault());$('sendBtn').disabled=true;
     const p=document.createElement('p');p.textContent='자료를 불러오지 못했습니다. 관리자에게 문의해 주세요. (파일을 직접 열지 말고 웹 서버에서 실행해야 합니다.)';p.className='load-error';p.style.color='#b33';$('emptyState').append(p);

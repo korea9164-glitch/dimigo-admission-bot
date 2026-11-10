@@ -3,42 +3,55 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="description" content="한국디지털미디어고등학교 입학전형 안내 챗봇 (시범 버전)">
-  <meta name="theme-color" content="#12346b">
-  <title>디미고 입학상담 | 시범 버전</title>
-  <link rel="stylesheet" href="/assets/style.css">
-  <script defer src="/assets/app.js"></script>
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="한국디지털미디어고등학교 신입생 입학전형 FAQ 상담 챗봇">
+  <title>디미고 입학상담</title>
+  <link rel="stylesheet" href="./assets/style.css">
+  <script defer src="./assets/app.js"></script>
 </head>
 <body>
-  <div class="shell">
-    <header class="header">
-      <div class="brandmark" aria-hidden="true">D</div>
-      <div class="brand">
-        <div class="brand-school">한국디지털미디어고등학교</div>
-        <div class="brand-name">AI 입학상담 <span class="beta">시범 운영</span></div>
+  <div class="app" id="app">
+    <aside class="sidebar" id="sidebar" aria-label="상담 메뉴">
+      <div class="sidebar-top">
+        <div class="school-brand"><span class="school-icon">D</span><span>DIMIGO <small>입학상담</small></span></div>
+        <button class="sidebar-close icon-button" id="closeMenuBtn" type="button" aria-label="메뉴 닫기">✕</button>
       </div>
-      <button class="header-action" id="resetBtn" type="button" aria-label="대화 새로 시작">새 대화</button>
-    </header>
-    <div class="notice" role="note"><span class="notice-dot"></span><span>공식 자료 기반 안내를 위한 <strong>시험용 프로그램</strong>입니다. 최종 운영 전 학교의 검토가 필요합니다.</span></div>
-    <main class="chat" id="chat" aria-label="입학상담 대화" aria-live="polite" aria-relevant="additions text">
-      <div class="empty-state" id="emptyState">
-        <div class="intro-symbol" aria-hidden="true">?</div>
-        <h1>입학전형, 무엇이 궁금하신가요?</h1>
-        <p>등록된 공식 자료에서 관련 안내를 찾아드립니다.<br>확인되지 않는 사항은 카카오톡 상담을 안내합니다.</p>
-        <div class="suggestions" id="suggestions"></div>
-      </div>
-    </main>
-    <div class="composer-area">
-      <div class="privacy">개인정보(이름, 연락처, 수험번호, 성적 등)를 입력하지 마세요.</div>
-      <form class="composer" id="chatForm" autocomplete="off">
-        <label class="sr-only" for="question">질문 입력</label>
-        <textarea id="question" name="question" placeholder="입학전형에 대해 질문해 주세요" rows="1" maxlength="500" required></textarea>
-        <button type="submit" id="sendBtn" aria-label="질문 보내기" title="질문 보내기">➤</button>
-      </form>
-      <div class="footnote">답변은 등록된 안내 자료를 기준으로 하며, 학교의 최종 공지를 우선합니다.</div>
-    </div>
+      <button class="new-chat" id="resetBtn" type="button"><span class="plus-icon">＋</span> 새 대화 시작 <span class="new-chat-arrow">↗</span></button>
+      <div class="sidebar-section-title">빠른 질문</div>
+      <div class="quick-links" id="sidebarSuggestions"></div>
+      <div class="sidebar-spacer"></div>
+      <div class="sidebar-info"><span class="status-dot"></span> 2027학년도 입학전형 안내 <span class="test-tag">시범 운영</span></div>
+      <p class="sidebar-description">등록된 공식 자료에서 답변을 찾아 안내합니다. 확인되지 않은 사항은 담당자 상담을 권장합니다.</p>
+      <div class="sidebar-footer"><span class="school-icon small">D</span><span>한국디지털미디어고등학교</span></div>
+    </aside>
+    <div class="mobile-overlay" id="mobileOverlay" hidden></div>
+    <section class="main-panel">
+      <header class="topbar">
+        <div class="header-left"><button class="icon-button menu-toggle" id="menuBtn" type="button" aria-label="메뉴 열기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><div class="header-title">디미고 입학상담 <span class="header-chevron">⌄</span></div><span class="header-beta">BETA</span></div>
+        <button class="top-action" id="topResetBtn" type="button" title="새 대화 시작"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L9 17l-4 1 1-4Z"/></svg><span>새 대화</span></button>
+      </header>
+      <main class="conversation" id="chat" aria-label="입학상담 대화" aria-live="polite" aria-relevant="additions text">
+        <div class="welcome" id="emptyState">
+          <div class="welcome-logo">D<span class="welcome-orbit"></span></div>
+          <h1>무엇을 도와드릴까요?</h1>
+          <p>2027학년도 디미고 입학전형에 대해 편하게 질문하세요.<br>확인된 안내 자료를 바탕으로 답변해 드립니다.</p>
+          <div class="welcome-divider">이런 질문을 해보세요</div>
+          <div class="suggestions" id="suggestions"></div>
+        </div>
+      </main>
+      <footer class="composer-wrap">
+        <div class="composer-inner">
+          <form class="composer" id="chatForm" autocomplete="off">
+            <label class="sr-only" for="question">질문 입력</label>
+            <textarea id="question" name="question" placeholder="입학전형에 대해 질문해 주세요" rows="1" maxlength="500" required></textarea>
+            <div class="composer-bottom"><div class="composer-hint"><span class="sparkle">✧</span> 공식 자료 기반 답변</div><button type="submit" id="sendBtn" aria-label="전송" title="전송"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5m-7 7 7-7 7 7"/></svg></button></div>
+          </form>
+          <div class="footnote">이름·연락처·수험번호·성적 등 개인정보를 입력하지 마세요. 답변보다 공식 공지사항이 우선합니다.</div>
+        </div>
+      </footer>
+    </section>
   </div>
-  <template id="userMessage"><div class="message user"><div class="bubble"></div></div></template>
-  <template id="botMessage"><div class="message assistant"><div class="avatar" aria-hidden="true">D</div><div class="message-content"><div class="speaker">디미고 입학상담</div><div class="bubble"></div><div class="source"></div><div class="actions"></div></div></div></template>
+  <template id="userMessage"><div class="message user"><div class="message-inner"><div class="bubble"></div></div></div></template>
+  <template id="botMessage"><div class="message assistant"><div class="message-inner"><div class="bot-heading"><span class="bot-avatar">D</span><span>디미고 입학상담</span></div><div class="bubble"></div><div class="source"></div><div class="actions"></div></div></div></template>
 </body>
 </html>
