@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="description" content="한국디지털미디어고등학교 입학전형 안내 챗봇 (시범 버전)">
+  <meta name="theme-color" content="#12346b">
+  <title>디미고 입학상담 | 시범 버전</title>
+  <link rel="stylesheet" href="/assets/style.css">
+  <script defer src="/assets/app.js"></script>
+</head>
+<body>
+  <div class="shell">
+    <header class="header">
+      <div class="brandmark" aria-hidden="true">D</div>
+      <div class="brand">
+        <div class="brand-school">한국디지털미디어고등학교</div>
+        <div class="brand-name">AI 입학상담 <span class="beta">시범 운영</span></div>
+      </div>
+      <button class="header-action" id="resetBtn" type="button" aria-label="대화 새로 시작">새 대화</button>
+    </header>
+    <div class="notice" role="note"><span class="notice-dot"></span><span>공식 자료 기반 안내를 위한 <strong>시험용 프로그램</strong>입니다. 최종 운영 전 학교의 검토가 필요합니다.</span></div>
+    <main class="chat" id="chat" aria-label="입학상담 대화" aria-live="polite" aria-relevant="additions text">
+      <div class="empty-state" id="emptyState">
+        <div class="intro-symbol" aria-hidden="true">?</div>
+        <h1>입학전형, 무엇이 궁금하신가요?</h1>
+        <p>등록된 공식 자료에서 관련 안내를 찾아드립니다.<br>확인되지 않는 사항은 카카오톡 상담을 안내합니다.</p>
+        <div class="suggestions" id="suggestions"></div>
+      </div>
+    </main>
+    <div class="composer-area">
+      <div class="privacy">개인정보(이름, 연락처, 수험번호, 성적 등)를 입력하지 마세요.</div>
+      <form class="composer" id="chatForm" autocomplete="off">
+        <label class="sr-only" for="question">질문 입력</label>
+        <textarea id="question" name="question" placeholder="입학전형에 대해 질문해 주세요" rows="1" maxlength="500" required></textarea>
+        <button type="submit" id="sendBtn" aria-label="질문 보내기" title="질문 보내기">➤</button>
+      </form>
+      <div class="footnote">답변은 등록된 안내 자료를 기준으로 하며, 학교의 최종 공지를 우선합니다.</div>
+    </div>
+  </div>
+  <template id="userMessage"><div class="message user"><div class="bubble"></div></div></template>
+  <template id="botMessage"><div class="message assistant"><div class="avatar" aria-hidden="true">D</div><div class="message-content"><div class="speaker">디미고 입학상담</div><div class="bubble"></div><div class="source"></div><div class="actions"></div></div></div></template>
+</body>
+</html>

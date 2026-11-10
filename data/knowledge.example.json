@@ -1,0 +1,16 @@
+{
+  "version": "example-only",
+  "updatedAt": "YYYY-MM-DD",
+  "entries": [
+    {
+      "id": "sample-document-upload",
+      "status": "published",
+      "question": "서류를 어디에서 제출하나요?",
+      "variants": ["서류제출 어디서 해요", "증빙서류 업로드 위치"],
+      "keywords": ["서류", "제출", "업로드", "증빙서류"],
+      "answer": "[검증된 학교 공식 자료에 있는 답변을 여기에 입력하세요.]",
+      "sourceTitle": "[공식 공지 제목]",
+      "sourceUrl": ""
+    }
+  ]
+}
